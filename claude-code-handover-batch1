@@ -1,0 +1,846 @@
+CLAUDE CODE HANDOVER
+
+PNG Financial Markets eBook — Batch 1: Project Governance System
+
+Date: 4 October 2026
+Repository: "png-financial-markets-ebook"
+Purpose: Establish the project's permanent governance, workflow and AI-agent control system.
+
+---
+
+1. YOUR ROLE
+
+You are the execution and repository-management agent for the PNG Financial Markets eBook project.
+
+Your job in this task is to establish the project's project-management and AI-agent governance system.
+
+You are NOT being asked to write the book, draft chapters, perform new research, or redesign the existing research.
+
+ChatGPT is being used for:
+
+- project planning;
+- research strategy;
+- analysis;
+- review;
+- editorial decisions;
+- quality control;
+- task design.
+
+Claude Code is being used for:
+
+- inspecting the repository;
+- creating/editing project files;
+- implementing approved changes;
+- organising files;
+- validating work;
+- committing changes;
+- pushing changes to GitHub.
+
+GitHub is the project's source of truth.
+
+---
+
+2. IMPORTANT SCOPE RESTRICTION
+
+For this task, do ONLY the following:
+
+1. Inspect the existing repository.
+2. Understand its current structure.
+3. Preserve existing research and project files.
+4. Create the Batch 1 governance documents listed below.
+5. If necessary, make only minimal structural changes required to support those documents.
+6. Update project status/documentation appropriately.
+7. Review your own changes.
+8. Commit the changes.
+9. Push them to the repository's current working branch/main branch according to the existing repository configuration.
+10. Report exactly what was changed.
+
+DO NOT:
+
+- write book chapters;
+- create the final book outline;
+- create chapter specifications;
+- rewrite the Research Master;
+- alter Perplexity research;
+- delete research files;
+- invent missing research;
+- perform unrelated cleanup;
+- introduce unnecessary software/dependencies;
+- change the project's purpose;
+- create publication files;
+- begin manuscript production.
+
+---
+
+3. FIRST: INSPECT THE REPOSITORY
+
+Before making changes, inspect:
+
+- existing files;
+- directories;
+- current README;
+- existing research documents;
+- existing handovers;
+- existing "RESEARCH_MASTER.md";
+- existing project documentation;
+- Git status;
+- recent commits.
+
+Do not assume the repository is empty or follows the structure described below.
+
+The repository may contain files created during earlier stages.
+
+Preserve all existing substantive research unless there is an explicit instruction in this handover to change it.
+
+If you discover that a file is incorrectly named, duplicated or contains a handover instead of its intended final document, DO NOT silently rewrite its substantive content during this Batch 1 task.
+
+Record the issue for a later task.
+
+---
+
+4. BATCH 1 DOCUMENTS TO CREATE
+
+Create these eight project-governance files at the repository root:
+
+README.md
+AI_INSTRUCTIONS.md
+PROJECT_REQUIREMENTS.md
+PROJECT_STATUS.md
+WORKFLOW.md
+DECISIONS.md
+CHANGELOG.md
+CONTRIBUTING.md
+
+If any of these files already exist:
+
+- inspect them first;
+- preserve useful existing information;
+- improve/merge rather than blindly overwrite;
+- avoid deleting information unless clearly obsolete or contradictory;
+- record significant changes.
+
+---
+
+5. README.md
+
+The README is the project's front door.
+
+It should explain the project without becoming a full research document.
+
+Use this structure:
+
+# PNG Financial Markets eBook
+
+## 1. Project Overview
+
+## 2. Purpose
+
+## 3. Target Audience
+
+## 4. Editorial Position
+
+## 5. What This Book Is Not
+
+## 6. Current Project Stage
+
+## 7. Repository Structure
+
+## 8. Source-of-Truth Documents
+
+## 9. AI-Assisted Production Workflow
+
+## 10. Research Rules
+
+## 11. Writing Rules
+
+## 12. Fact-Checking Rules
+
+## 13. Git and Change Rules
+
+## 14. How Claude Code Should Work
+
+## 15. How ChatGPT Should Review
+
+## 16. Current Outstanding Tasks
+
+## 17. Definition of Done
+
+## 18. Version History
+
+The README should communicate:
+
+Project purpose
+
+A free downloadable general-audience financial-markets eBook, primarily relevant to secondary students in Papua New Guinea but useful to the wider public.
+
+Editorial position
+
+The book should:
+
+- explain financial markets clearly;
+- introduce global concepts;
+- connect those concepts to PNG;
+- use real PNG examples;
+- make financial-market concepts understandable to non-specialists;
+- encourage financial literacy and informed thinking.
+
+What it is NOT
+
+It is not:
+
+- a formal school textbook;
+- a university finance textbook;
+- a professional finance textbook;
+- a personalised investment-advice manual;
+- a guarantee of investment returns;
+- a promotional publication for any financial institution.
+
+The README should point readers to the more authoritative project-control documents rather than duplicating them.
+
+---
+
+6. AI_INSTRUCTIONS.md
+
+This is the primary operating guide for AI agents working on the repository.
+
+Create a clear section called:
+
+# AI Operating Instructions
+
+Include these principles.
+
+6.1 Read before modifying
+
+An AI agent must inspect the relevant project-control files before making substantive changes.
+
+At minimum, normally check:
+
+README.md
+AI_INSTRUCTIONS.md
+PROJECT_REQUIREMENTS.md
+PROJECT_STATUS.md
+WORKFLOW.md
+DECISIONS.md
+
+Then read the relevant stage-specific documents.
+
+For research work, also consult the relevant research-control documents.
+
+For manuscript work, consult the relevant editorial and chapter specifications.
+
+Do not load every file unnecessarily.
+
+---
+
+6.2 Do not guess
+
+If the repository contains an established rule, decision, requirement or verified research finding, follow it.
+
+If information is missing:
+
+- identify the gap;
+- do not invent an answer;
+- do not silently substitute an assumption;
+- report the uncertainty.
+
+---
+
+6.3 Preserve source research
+
+Raw research and source material must be preserved.
+
+Do not replace raw research with a rewritten summary.
+
+Derived documents may synthesise research, but the underlying source material should remain available.
+
+---
+
+6.4 Distinguish evidence types
+
+Never silently turn:
+
+- forecasts into actuals;
+- targets into achievements;
+- historical data into current data;
+- estimates into verified facts;
+- registered accounts into active users;
+- qualitative claims into numerical statistics.
+
+---
+
+6.5 Scope discipline
+
+Only perform the task requested.
+
+Do not take the initiative to start later project stages merely because they appear possible.
+
+If a task reveals another problem, record it and report it unless fixing it is necessary to complete the current task.
+
+---
+
+6.6 Review before committing
+
+Before committing:
+
+1. inspect changed files;
+2. review the diff;
+3. check for accidental changes;
+4. verify filenames;
+5. check Markdown formatting;
+6. confirm no research files were unintentionally changed;
+7. confirm no unrelated files were modified.
+
+---
+
+6.7 Report unresolved issues
+
+Every meaningful task report should identify:
+
+- what was done;
+- files changed;
+- files created;
+- files not changed;
+- assumptions;
+- unresolved issues;
+- validation performed;
+- commit ID;
+- next recommended action.
+
+---
+
+7. PROJECT_REQUIREMENTS.md
+
+This is the project's requirements contract.
+
+Create these sections:
+
+# Project Requirements
+
+## 1. Core Purpose
+
+## 2. Audience
+
+## 3. Book Characteristics
+
+## 4. Required Content Principles
+
+## 5. PNG Relevance
+
+## 6. Research Requirements
+
+## 7. Financial-Literacy Requirements
+
+## 8. Editorial Requirements
+
+## 9. Safety and Consumer-Protection Requirements
+
+## 10. Things the Book Must Not Do
+
+## 11. Quality Requirements
+
+## 12. Publication Requirements
+
+The following requirements must be incorporated.
+
+Core purpose
+
+The book must explain how financial markets work and why they matter, with strong relevance to Papua New Guinea.
+
+Audience
+
+Primary:
+
+- secondary students in PNG;
+- young people beginning to understand finance;
+- general readers without specialist financial knowledge.
+
+Secondary:
+
+- teachers;
+- parents;
+- community members;
+- general adult readers.
+
+Required characteristics
+
+The book should be:
+
+- accessible;
+- accurate;
+- engaging;
+- practical in its explanations;
+- PNG-relevant;
+- globally informed;
+- evidence-based;
+- free to access.
+
+Research requirements
+
+Important PNG statistics must be:
+
+- dated;
+- sourced;
+- traceable;
+- clearly labelled.
+
+Official/primary sources should be preferred for:
+
+- regulation;
+- monetary policy;
+- financial-system statistics;
+- government debt;
+- exchange-rate information;
+- market structure;
+- legal claims.
+
+Editorial requirements
+
+Do not:
+
+- give personalised investment advice;
+- guarantee returns;
+- imply that any investment is risk-free;
+- imply that diversification eliminates all risk;
+- present past performance as a prediction of future performance;
+- use unsupported financial statistics.
+
+---
+
+8. PROJECT_STATUS.md
+
+This file is the project's current-state control panel.
+
+Create the following structure:
+
+# Project Status
+
+## Current Stage
+
+## Overall Status
+
+## Completed
+
+## In Progress
+
+## Not Started
+
+## Blocked
+
+## Outstanding Research Gaps
+
+## Current Approved Next Action
+
+## Last Review
+
+## Last Commit
+
+For the current project state, use approximately:
+
+Current Stage
+
+Research verification / research-control setup.
+
+Completed
+
+- initial research;
+- Perplexity research;
+- research audit;
+- research synthesis work;
+- research-gap verification prepared.
+
+In progress
+
+- repository governance system;
+- final research verification.
+
+Not started
+
+- final book outline;
+- chapter specifications;
+- chapter drafting;
+- editorial fact-check;
+- layout;
+- publication.
+
+Important
+
+Do not mark future stages as completed.
+
+Do not claim that unresolved research gaps have been solved.
+
+If the repository contains evidence that changes these statuses, use the repository evidence and report the discrepancy.
+
+---
+
+9. WORKFLOW.md
+
+Create the project's production workflow.
+
+Use this overall pipeline:
+
+PHASE 1 — Research
+        ↓
+PHASE 2 — Research Audit
+        ↓
+PHASE 3 — Research Master
+        ↓
+PHASE 4 — Research Gap Verification
+        ↓
+PHASE 5 — Book Architecture / Outline
+        ↓
+PHASE 6 — Chapter Specifications
+        ↓
+PHASE 7 — Chapter Drafting
+        ↓
+PHASE 8 — Editorial Review
+        ↓
+PHASE 9 — Fact Checking
+        ↓
+PHASE 10 — Layout / Graphics
+        ↓
+PHASE 11 — Publication QA
+        ↓
+PHASE 12 — Final Release
+
+Explain each phase briefly.
+
+Include this rule:
+
+«A later phase must not be treated as approved merely because the files required for that phase can technically be created.»
+
+Progression between phases requires review/approval.
+
+---
+
+10. DECISIONS.md
+
+Create a decision register.
+
+Start with the following decisions.
+
+# Project Decisions
+
+## D001 — Book Type
+
+The book is a free general-audience financial-markets eBook and is not intended to be a formal school textbook.
+
+## D002 — Primary Audience
+
+The primary audience is secondary students in Papua New Guinea and the wider general public.
+
+## D003 — Geographic Approach
+
+Global financial concepts should be explained first where useful, followed by PNG applications and examples.
+
+## D004 — Research Standard
+
+Important PNG statistics must be traceable to reliable sources and must include reference dates.
+
+## D005 — Regulatory Sources
+
+Primary regulatory/government sources should be preferred for legal and regulatory claims.
+
+## D006 — Investment Advice
+
+The book must not provide personalised investment advice or guaranteed investment outcomes.
+
+## D007 — Statistical Discipline
+
+Historical figures, forecasts, estimates, targets and current actuals must be clearly distinguished.
+
+## D008 — Unverified Information
+
+Unverified statistics must not be presented as established facts.
+
+## D009 — AI Roles
+
+ChatGPT is primarily responsible for planning, research analysis, review and quality control.
+
+Claude Code is primarily responsible for repository execution, implementation, testing, organisation and automation.
+
+## D010 — Source of Truth
+
+GitHub is the project source of truth.
+
+## D011 — Handover Separation
+
+Task-specific handovers must not replace or masquerade as permanent project-control documents.
+
+## D012 — Scope Discipline
+
+AI agents must not independently advance the project to a later production stage without an approved task.
+
+Do not invent additional major decisions unless clearly necessary.
+
+---
+
+11. CHANGELOG.md
+
+Create a clean changelog.
+
+Record the establishment of the governance system as the first major entry.
+
+Use standard categories such as:
+
+Added
+Changed
+Fixed
+Removed
+Research
+
+Do not fabricate historical changes.
+
+If the repository already contains a changelog, preserve its history.
+
+---
+
+12. CONTRIBUTING.md
+
+This project is primarily AI-assisted, so this should function as an AI contribution protocol.
+
+Include:
+
+# Contribution and Change Protocol
+
+## Before Changing Files
+
+1. Read applicable instructions.
+2. Check current project status.
+3. Identify authoritative documents.
+4. Understand the requested scope.
+
+## During Changes
+
+1. Keep changes focused.
+2. Preserve source research.
+3. Do not guess.
+4. Do not silently change project requirements.
+5. Do not perform unrelated cleanup.
+
+## Before Commit
+
+1. Review git status.
+2. Review git diff.
+3. Check for accidental modifications.
+4. Validate Markdown and relevant files.
+5. Confirm scope.
+
+## Commit
+
+Use a clear commit message describing the actual change.
+
+## After Commit
+
+Report:
+- files changed;
+- purpose;
+- validation;
+- unresolved issues;
+- commit ID;
+- recommended next step.
+
+---
+
+13. DOCUMENT AUTHORITY
+
+The repository must establish the following distinction.
+
+Permanent project documents
+
+These define how the project operates:
+
+README.md
+AI_INSTRUCTIONS.md
+PROJECT_REQUIREMENTS.md
+PROJECT_STATUS.md
+WORKFLOW.md
+DECISIONS.md
+CONTRIBUTING.md
+
+Research-control documents
+
+These define what the research currently supports:
+
+RESEARCH_MASTER.md
+RESEARCH_GAP_VERIFICATION_*.md
+
+Task handovers
+
+These tell an agent what to do for a specific task.
+
+They are NOT automatically authoritative project requirements.
+
+This distinction is important.
+
+A handover may instruct an agent to create a document, but once that document is created, the handover itself should not be mistaken for the finished document.
+
+---
+
+14. DO NOT RESTRUCTURE THE WHOLE REPOSITORY YET
+
+Do not move all existing research files into new directories during this task unless the repository is already structured that way.
+
+We will organise the research repository in a later controlled task.
+
+For Batch 1, the priority is establishing governance without risking existing research.
+
+If you believe a structural move is necessary, report it instead of doing it.
+
+---
+
+15. SPECIAL ISSUE TO RECORD
+
+Earlier project work may have resulted in "RESEARCH_MASTER.md" containing a Claude Code handover/instruction document instead of only the final Research Master synthesis.
+
+During this Batch 1 task:
+
+DO NOT rewrite it.
+
+Simply record the issue in:
+
+PROJECT_STATUS.md
+
+or another appropriate project-control section as:
+
+«"RESEARCH_MASTER.md requires inspection/correction in the next research-control task because its current contents may contain the previous Claude handover rather than the intended final Research Master document."»
+
+Do not delete the existing file.
+
+---
+
+16. NO NEW RESEARCH REQUIRED
+
+Do not perform extensive new web research for this task.
+
+The current task is repository governance.
+
+Existing research should be treated as existing project material.
+
+---
+
+17. VALIDATION
+
+After creating the files:
+
+Check 1 — Files
+
+Confirm all required governance files exist.
+
+Check 2 — Markdown
+
+Check Markdown formatting.
+
+Check 3 — Git
+
+Run:
+
+git status
+git diff --stat
+git diff
+
+Review the changes carefully.
+
+Check 4 — Scope
+
+Confirm:
+
+- no chapter was created;
+- no research was deleted;
+- no unrelated project files were modified;
+- no dependencies were added;
+- no existing research was silently rewritten.
+
+Check 5 — Consistency
+
+Make sure the new documents do not contradict one another.
+
+In particular:
+
+- README current stage
+- PROJECT_STATUS current stage
+- WORKFLOW phases
+- DECISIONS
+- AI_INSTRUCTIONS
+
+must be consistent.
+
+---
+
+18. COMMIT
+
+After validation, create a clear commit.
+
+Suggested commit message:
+
+chore: establish project governance and AI workflow
+
+Do not use a misleading commit message such as "complete ebook" or "final research".
+
+Push the commit to the repository.
+
+---
+
+19. FINAL REPORT
+
+After completing the task, report in this exact general structure:
+
+BATCH 1 COMPLETE
+
+Repository:
+...
+
+Commit:
+...
+
+Files created:
+- ...
+- ...
+
+Files modified:
+- ...
+
+Files intentionally not modified:
+- ...
+
+Validation:
+- ...
+- ...
+
+Important existing issue discovered:
+- ...
+
+Research changes:
+NONE
+
+Manuscript changes:
+NONE
+
+Unresolved issues:
+- ...
+
+Recommended next task:
+...
+
+Be precise.
+
+Do not claim completion of anything that was not actually completed.
+
+---
+
+20. STOP CONDITION
+
+Once Batch 1 is complete and committed:
+
+STOP.
+
+Do not proceed automatically to:
+
+- Research Master correction;
+- research-gap verification implementation;
+- book outline;
+- chapter specifications;
+- chapter writing.
+
+Wait for the next approved task.
+
+END OF HANDOVER
