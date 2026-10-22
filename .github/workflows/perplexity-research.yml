@@ -1,0 +1,229 @@
+name: Perplexity Research
+
+on:
+  workflow_dispatch:
+    inputs:
+      research_question:
+        description: "What should Perplexity research?"
+        required: true
+        type: string
+      research_depth:
+        description: "Research depth (API usage may incur charges)"
+        required: true
+        type: choice
+        options:
+          - quick
+          - detailed
+        default: quick
+
+permissions:
+  contents: write
+
+concurrency:
+  group: perplexity-research
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check required API secret
+        env:
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+        run: |
+          if [ -z "$PERPLEXITY_API_KEY" ]; then
+            echo "::error::Missing PERPLEXITY_API_KEY repository secret. See PERPLEXITY_AUTOMATION_SETUP.md."
+            exit 1
+          fi
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run Perplexity research and write report
+        id: research
+        env:
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+          RESEARCH_QUESTION: ${{ inputs.research_question }}
+          RESEARCH_DEPTH: ${{ inputs.research_depth }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: |
+          python3 <<'PY'
+          import datetime
+          import json
+          import os
+          import re
+          import urllib.error
+          import urllib.request
+          from pathlib import Path
+
+          question = os.environ["RESEARCH_QUESTION"].strip()
+          depth = os.environ["RESEARCH_DEPTH"]
+          if not question:
+              raise SystemExit("Research question must not be empty.")
+          if len(question) > 2000:
+              raise SystemExit("Research question must be 2,000 characters or fewer.")
+
+          detail_instruction = (
+              "Provide a structured report with findings, caveats, and a useful source list."
+              if depth == "detailed"
+              else "Provide a concise report with the most important findings and caveats."
+          )
+          system_prompt = """You are a careful research assistant supporting the free, educational PNG Financial Markets eBook.
+          Prioritise authoritative primary sources, especially Papua New Guinea institutions where relevant:
+          Bank of Papua New Guinea, PNG Treasury, National Statistical Office, Securities Commission of PNG,
+          PNGX, relevant government departments, IMF, World Bank and WTO.
+          Use current sources when the question concerns current facts. Distinguish publication date from the
+          period a statistic describes; actual data from forecasts or estimates; and legal facts from interpretation.
+          Never invent citations, numbers, page references, or claims. Flag conflicting evidence and unknowns.
+          Do not give personalised investment advice or promise returns. This is educational research, not financial advice.
+          Return a readable Markdown report. Include source titles, direct URLs, publication dates and relevant dates
+          for figures where available. Explain limitations and identify what remains unverified."""
+          user_prompt = f"""Research question:
+          {question}
+
+          Research depth: {depth}.
+          {detail_instruction}
+          Include a short conclusion and a section titled "Unverified points and limitations"."""
+
+          payload = {
+              "model": "sonar-pro" if depth == "detailed" else "sonar",
+              "messages": [
+                  {"role": "system", "content": system_prompt},
+                  {"role": "user", "content": user_prompt},
+              ],
+              "temperature": 0.2,
+          }
+          request = urllib.request.Request(
+              "https://api.perplexity.ai/chat/completions",
+              data=json.dumps(payload).encode("utf-8"),
+              headers={
+                  "Authorization": "Bearer " + os.environ["PERPLEXITY_API_KEY"],
+                  "Content-Type": "application/json",
+                  "Accept": "application/json",
+              },
+              method="POST",
+          )
+          try:
+              with urllib.request.urlopen(request, timeout=120) as response:
+                  data = json.loads(response.read().decode("utf-8"))
+          except urllib.error.HTTPError as exc:
+              # Do not print request headers or API key.
+              detail = exc.read().decode("utf-8", errors="replace")[:1500]
+              raise SystemExit(f"Perplexity API returned HTTP {exc.code}: {detail}")
+          except Exception as exc:
+              raise SystemExit(f"Perplexity request failed: {type(exc).__name__}: {exc}")
+
+          choices = data.get("choices") or []
+          if not choices:
+              raise SystemExit("Perplexity API response did not contain any answer choices.")
+          content = (choices[0].get("message") or {}).get("content", "")
+          if not isinstance(content, str) or not content.strip():
+              raise SystemExit("Perplexity returned an empty research answer.")
+
+          citations = data.get("citations") or []
+          now = datetime.datetime.now(datetime.timezone.utc)
+          timestamp = now.strftime("%Y-%m-%d %H:%M UTC")
+          slug = re.sub(r"[^a-z0-9]+", "-", question.lower()).strip("-")[:60].strip("-")
+          if not slug:
+              slug = "research"
+          filename = f"{now.strftime('%Y%m%d-%H%M%S')}-{slug}.md"
+          outdir = Path("docs/research")
+          outdir.mkdir(parents=True, exist_ok=True)
+
+          report = [
+              "# Perplexity Research Report",
+              "",
+              f"- **Research question:** {question}",
+              f"- **Generated:** {timestamp}",
+              f"- **Depth:** {depth}",
+              "- **Status:** AI-generated research; sources and claims require review before being accepted into project material.",
+              "",
+              "## Findings",
+              "",
+              content.strip(),
+              "",
+          ]
+          if citations:
+              report += ["## API-provided citations", ""]
+              for i, citation in enumerate(citations, 1):
+                  if isinstance(citation, str):
+                      report.append(f"{i}. {citation}")
+                  elif isinstance(citation, dict):
+                      title = citation.get("title") or citation.get("url") or f"Source {i}"
+                      url = citation.get("url")
+                      report.append(f"{i}. [{title}]({url})" if url else f"{i}. {title}")
+              report.append("")
+          report += [
+              "## Review gate",
+              "",
+              "This report is a research input, not an approved project decision. Verify important claims against the underlying sources. Do not copy unsupported claims into the eBook or treat this report as personalised investment advice.",
+              "",
+              f"<!-- GitHub Actions run ID: {os.environ['GITHUB_RUN_ID']} -->",
+          ]
+          path = outdir / filename
+          path.write_text("\n".join(report) + "\n", encoding="utf-8")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"report_path={path.as_posix()}\n")
+              output.write(f"report_name={filename}\n")
+          print(f"Research report created: {path.as_posix()}")
+          PY
+
+      - name: Commit research report
+        if: success()
+        env:
+          REPORT_PATH: ${{ steps.research.outputs.report_path }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$REPORT_PATH"
+          git commit -m "Add Perplexity research report" || {
+            echo "::error::Could not commit the generated report."
+            exit 1
+          }
+          git push
+
+      - name: Notify Discord
+        if: always()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          JOB_STATUS: ${{ job.status }}
+          RESEARCH_QUESTION: ${{ inputs.research_question }}
+          REPORT_PATH: ${{ steps.research.outputs.report_path }}
+          REPOSITORY: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "DISCORD_WEBHOOK_URL is not configured in this repository; skipping Discord notification."
+            exit 0
+          fi
+          python3 <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          status = os.environ.get("JOB_STATUS", "unknown")
+          question = os.environ.get("RESEARCH_QUESTION", "(question unavailable)")
+          report = os.environ.get("REPORT_PATH", "")
+          repo = os.environ["REPOSITORY"]
+          run_url = os.environ["RUN_URL"]
+          report_line = f"\nReport: `{report}`" if report and status == "success" else ""
+          message = (
+              f"Perplexity research workflow **{status.upper()}**\n"
+              f"Repository: {repo}\nQuestion: {question[:700]}"
+              f"{report_line}\nRun: {run_url}"
+          )
+          body = json.dumps({"content": message[:1900]}).encode("utf-8")
+          req = urllib.request.Request(
+              os.environ["DISCORD_WEBHOOK_URL"],
+              data=body,
+              headers={"Content-Type": "application/json", "User-Agent": "GitHubActions-PerplexityResearch"},
+              method="POST",
+          )
+          try:
+              with urllib.request.urlopen(req, timeout=15) as response:
+                  print(f"Discord notification sent (HTTP {response.status}).")
+          except Exception as exc:
+              print(f"Discord notification failed: {type(exc).__name__}: {exc}")
+              raise
+          PY
